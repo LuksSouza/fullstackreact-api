@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 public class HardCodedService {
 
-    private static Long counter = 0l;
+    private static Long counter = 0L;
     private static List<Todo> todoList = new ArrayList<>();
 
     static {
@@ -26,12 +26,12 @@ public class HardCodedService {
         todoList.add(new Todo(++counter, "Lucas", "Learn Jenkins", new Date(), false));
     }
 
-    public List<Todo> getAllTodo() {
+    public List<Todo> getAllBy(String username) {
         return todoList;
     }
 
-    public Todo deleteById(Long id) {
-        Todo todo = findById(id);
+    public Todo deleteByUsernameAndId(String username, Long id) {
+        Todo todo = getByUsernameAndId(username, id);
 
         if (todo == null) return null;
 
@@ -42,7 +42,7 @@ public class HardCodedService {
         return null;
     }
 
-    public Todo findById(Long id) {
+    public Todo getByUsernameAndId(String username, Long id) {
         Optional<Todo> todoFound = todoList.stream().filter(todo -> todo.getId().equals(id)).findFirst();
 
         if (todoFound.isPresent()) {
@@ -51,4 +51,17 @@ public class HardCodedService {
 
         return null;
     }
+
+    public Todo save(Todo todo) {
+        if (todo.getId() == -1 || todo.getId() == 0) {
+            todo.setId(++counter);
+            todoList.add(todo);
+        } else {
+            this.deleteByUsernameAndId("", todo.getId());
+            todoList.add(todo);
+        }
+
+        return todo;
+    }
+
 }

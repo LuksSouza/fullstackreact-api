@@ -1,14 +1,23 @@
 package com.in28minutes.rest.webservice.restfulwebservices.todo;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "todo")
 public class Todo {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String description;
+    @Column(name = "target_date")
     private Date targetDate;
+    @Column(name = "done")
     private boolean isDone;
+
+    public Todo() {}
 
     public Todo(Long id, String username, String description, Date targetDate, boolean isDone) {
         this.id = id;
